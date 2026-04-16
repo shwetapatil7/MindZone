@@ -1,0 +1,926 @@
+/* --- Global Variables and Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --color-off-white: #FDF2E4;         /* Main Background (Lace) */
+    --color-light-beige: #EFE0C7;       /* Card backgrounds (Dutch White) */
+    --color-soft-lavender: #C4BED2;     /* Primary accent/nav buttons (Thistle) */
+    --color-soft-green: #A8C0A9;        /* Secondary accent/buttons (Ash Green) */
+    --color-dark-green: #657D60;        /* Main text/strong accents (Reseda Green) */
+    --color-light-grey: #F5F5F5;        /* Input/UI element backgrounds */
+    --shadow-deep: 0 15px 40px rgba(0, 0, 0, 0.15); /* Stronger shadow for prominent cards */
+    --shadow-card: 0 5px 15px rgba(0, 0, 0, 0.08); /* Lighter shadow for inner cards */
+    --border-radius-large: 20px;
+    --border-radius-medium: 10px;
+    --border-radius-small: 8px;
+    --app-max-width: 1400px; /* Wider for desktop feel */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-off-white);
+    color: var(--color-dark-green);
+    line-height: 1.6;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+    color: var(--color-dark-green);
+    font-weight: 600;
+}
+h1 { font-size: 2.4em; margin-bottom: 20px; color: #333; }
+h2 { font-size: 1.8em; margin-bottom: 25px; color: var(--color-dark-green); }
+h3 { font-size: 1.3em; margin-bottom: 15px; }
+
+a {
+    color: var(--color-dark-green);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+/* --- Utility Components (Card & Buttons) --- */
+.card {
+    background-color: var(--color-light-beige);
+    border-radius: var(--border-radius-large);
+    padding: 30px; 
+    box-shadow: var(--shadow-card);
+}
+
+.primary-btn {
+    background-color: var(--color-soft-green);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.05em;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: var(--color-dark-green);
+    padding: 12px 20px;
+    border: 2px solid var(--color-soft-green);
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    font-weight: 400;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+input:not([type="color"], [type="range"]), textarea, select {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 15px;
+    border: 1px solid var(--color-soft-lavender);
+    border-radius: var(--border-radius-small);
+    background-color: var(--color-light-grey); 
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-dark-green);
+    font-size: 1em;
+}
+
+.chart-placeholder {
+    width: 100%;
+    height: 200px; 
+    background-color: var(--color-light-grey); /* Light gray background for charts */
+    border-radius: var(--border-radius-medium);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-soft-lavender);
+    font-style: italic;
+    opacity: 0.8;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* --- Navigation Bar --- */
+#main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-light-beige);
+    padding: 15px 50px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+.logo {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--color-soft-lavender);
+    letter-spacing: 1px;
+}
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+.nav-links a {
+    padding: 10px 18px;
+    border-radius: var(--border-radius-medium); 
+    background-color: var(--color-soft-lavender);
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    white-space: nowrap; /* Keep links from wrapping */
+}
+.nav-links a.active {
+    background-color: var(--color-dark-green);
+}
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-soft-green);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+/* --- App Page Container --- */
+.app-page {
+    padding-top: 100px; 
+    max-width: var(--app-max-width);
+    margin: 0 auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    min-height: calc(100vh - 100px); 
+    padding-bottom: 50px; 
+}
+
+/* 1. Login / Register Page */
+.full-screen-page {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.split-container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px; 
+    height: 80vh; 
+    min-height: 600px;
+    border-radius: var(--border-radius-large);
+    overflow: hidden;
+    box-shadow: var(--shadow-deep);
+}
+
+.split-left {
+    flex: 1.3; 
+    background-color: var(--color-soft-lavender);
+    padding: 40px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center;
+    position: relative; 
+    /* Placeholder for the illustration/image */
+    background-image: url('https://i.pinimg.com/564x/d8/8d/89/d88d898d276cca125dc814b6e3a723c2.jpg'); /* Example image */
+    background-size: cover;
+    background-position: center;
+}
+
+.auth-logo { 
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.auth-logo-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.2);
+}
+
+.illustration-text {
+    color: white;
+    font-size: 1.1em;
+    font-weight: 300;
+    padding: 8px 15px;
+    margin-top: auto; 
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: rgba(0, 0, 0, 0.15); 
+    border-radius: var(--border-radius-small);
+}
+
+.split-right {
+    flex: 1;
+    background-color: var(--color-off-white);
+    padding: 60px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+}
+
+.auth-toggle-btn { 
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background-color: var(--color-soft-green);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.form-container {
+    max-width: 380px; 
+    width: 100%;
+    padding: 40px;
+    background-color: var(--color-light-beige);
+    border-radius: var(--border-radius-large);
+    text-align: center;
+    box-shadow: var(--shadow-card);
+}
+
+.form-container h2 {
+    color: var(--color-soft-lavender);
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 2. Home Dashboard */
+.home-welcome {
+    margin-bottom: 5px;
+}
+.daily-question {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: var(--color-dark-green);
+    font-weight: 500;
+}
+.daily-inspiration {
+    text-align: center;
+    font-size: 1.4em;
+    font-style: italic;
+    padding: 25px;
+    margin-bottom: 30px;
+    background-color: var(--color-soft-lavender); 
+    color: white;
+    box-shadow: var(--shadow-card);
+    border-radius: var(--border-radius-large);
+}
+.daily-inspiration .sub-text {
+    font-size: 0.9em;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+.quick-access-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+.access-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+    min-height: 150px;
+    cursor: pointer;
+    background-color: var(--color-light-beige); 
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s;
+}
+.access-card i {
+    font-size: 2.5em;
+    color: var(--color-soft-green);
+    margin-bottom: 15px;
+}
+.access-card p {
+    font-weight: 500;
+    color: var(--color-dark-green);
+}
+
+.mood-chart-card {
+    min-height: 350px; 
+    padding: 30px;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-card);
+}
+.mood-chart-card h3 {
+    margin-bottom: 20px;
+}
+.mood-chart-card .sub-text {
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--color-dark-green);
+    opacity: 0.8;
+    margin-top: 10px;
+}
+
+
+/* 3. Journal Page */
+.journal-container {
+    display: grid;
+    grid-template-columns: 3fr 1fr; 
+    gap: 30px;
+}
+
+.journal-editor {
+    padding: 30px;
+}
+.journal-title-input {
+    font-size: 1.3em;
+    font-weight: 500;
+    margin-bottom: 10px;
+    background-color: white; 
+    border: 1px solid var(--color-soft-lavender);
+    color: var(--color-dark-green);
+    padding: 12px 18px;
+}
+
+.journal-top-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+.journal-top-controls .mood-dropdown-label {
+    font-weight: 500;
+    white-space: nowrap;
+}
+.journal-top-controls select {
+    width: auto;
+    flex-grow: 1;
+    margin-bottom: 0; 
+    padding: 10px 15px;
+    background-color: white;
+}
+
+.privacy-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.privacy-toggle button {
+    padding: 8px 18px;
+    border: 1px solid var(--color-soft-green);
+    border-radius: var(--border-radius-medium);
+    background-color: transparent;
+    color: var(--color-dark-green);
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+.privacy-toggle button.active {
+    background-color: var(--color-soft-green);
+    color: white;
+}
+
+.mode-tabs {
+    display: flex;
+    margin-top: 25px; 
+    margin-bottom: -1px; 
+}
+.mode-tab {
+    padding: 12px 25px;
+    border: 1px solid var(--color-soft-lavender);
+    border-bottom: none; 
+    background-color: var(--color-soft-lavender);
+    color: white;
+    cursor: pointer;
+    border-radius: var(--border-radius-medium) var(--border-radius-medium) 0 0;
+    font-weight: 500;
+    opacity: 0.7;
+    margin-right: 5px;
+}
+.mode-tab.active {
+    background-color: var(--color-light-beige); 
+    color: var(--color-dark-green);
+    opacity: 1;
+    border-color: var(--color-soft-lavender);
+}
+
+.journal-mode {
+    display: none; 
+    padding: 25px; 
+    background-color: var(--color-light-beige);
+    border: 1px solid var(--color-soft-lavender);
+    border-radius: 0 var(--border-radius-medium) var(--border-radius-medium) var(--border-radius-medium);
+    min-height: 350px; 
+}
+.journal-mode.active {
+    display: block;
+}
+
+#type-mode textarea {
+    min-height: 250px;
+    border: 1px solid var(--color-soft-lavender);
+    background-color: white;
+}
+
+.draw-tools {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    padding: 15px 0;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--color-soft-lavender); 
+}
+.draw-tools label {
+    font-size: 0.95em;
+    font-weight: 500;
+    color: var(--color-dark-green);
+    white-space: nowrap;
+}
+.draw-tools input[type="range"] {
+    width: 100px;
+    margin: 0;
+    accent-color: var(--color-soft-green); 
+}
+.draw-tools input[type="color"] {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--color-soft-lavender);
+    padding: 0;
+    margin: 0;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    background: transparent; 
+}
+.draw-tools button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+.handwriting-canvas {
+    min-height: 300px;
+    background-color: white; 
+    border: 1px solid var(--color-soft-lavender);
+    border-radius: var(--border-radius-medium);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-soft-lavender);
+    font-style: italic;
+    opacity: 0.7;
+}
+#handwriting-canvas {
+    width: 100%;
+    height: 300px; /* Specific height for canvas */
+    background-color: white; /* **EXPLICITLY SET TO WHITE** */
+    border: 1px solid var(--color-soft-lavender);
+    border-radius: var(--border-radius-medium);
+    cursor: crosshair;
+    touch-action: none; /* Important for touch devices to prevent scrolling/zooming */
+}
+.journal-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.past-entries-sidebar {
+    padding: 25px;
+}
+.past-entries-sidebar h3 {
+    margin-bottom: 20px;
+}
+.entry-item {
+    background-color: white; 
+    border-radius: var(--border-radius-medium);
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    color: var(--color-dark-green);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.entry-item span {
+    font-size: 0.9em;
+    color: var(--color-soft-lavender);
+    margin-bottom: 5px;
+}
+.entry-item strong {
+    font-weight: 600;
+}
+
+
+/* 4. Mood Tracker */
+.mood-tracker-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr; 
+    gap: 30px;
+}
+
+.mood-input-card {
+    grid-row: 1 / span 2;
+    padding: 30px;
+}
+.mood-input-card h3 {
+    margin-bottom: 20px;
+}
+.mood-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+.mood-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border: 1px solid var(--color-soft-lavender); 
+    border-radius: var(--border-radius-medium);
+    background-color: white;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+.mood-option span:first-child {
+    font-size: 1.4em;
+    margin-right: 10px; 
+}
+.mood-option.selected {
+    border-color: var(--color-soft-green); 
+    background-color: var(--color-soft-green);
+    color: white;
+    box-shadow: 0 4px 10px rgba(168, 192, 169, 0.4);
+}
+.mood-input-card label {
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+.mood-input-card textarea {
+    min-height: 100px;
+    background-color: white;
+    border: 1px solid var(--color-soft-lavender);
+    margin-bottom: 20px;
+}
+
+.mood-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.stat-card {
+    background-color: var(--color-off-white); 
+    padding: 20px;
+    text-align: center;
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-card);
+}
+.stat-card i {
+    font-size: 1.8em;
+    color: var(--color-soft-green);
+    margin-bottom: 10px;
+}
+.stat-card strong {
+    display: block;
+    font-size: 1.6em;
+    color: var(--color-dark-green);
+    margin-top: 5px;
+}
+.stat-card p {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.mood-chart-wrapper { 
+    padding: 30px;
+    border-radius: var(--border-radius-large);
+    background-color: var(--color-light-beige);
+    box-shadow: var(--shadow-card);
+    grid-column: 2 / 3; 
+    margin-bottom: 20px; 
+}
+.mood-chart-wrapper h3 {
+    margin-bottom: 15px;
+}
+.chart-period-toggle {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+.chart-period-toggle button {
+    padding: 5px 15px;
+    border: 1px solid var(--color-soft-lavender);
+    border-radius: var(--border-radius-small);
+    background-color: white;
+    color: var(--color-dark-green);
+    font-size: 0.85em;
+    cursor: pointer;
+}
+.chart-period-toggle button.active {
+    background-color: var(--color-soft-green);
+    color: white;
+}
+.mood-distribution-chart {
+    padding: 30px;
+    border-radius: var(--border-radius-large);
+    background-color: var(--color-light-beige);
+    box-shadow: var(--shadow-card);
+    grid-column: 2 / 3;
+    min-height: 250px;
+}
+
+
+/* 5. Exercises Page */
+.exercises-header-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.exercises-header-tabs button {
+    padding: 10px 25px;
+    border: 1px solid var(--color-soft-lavender);
+    border-radius: var(--border-radius-medium);
+    background-color: white;
+    color: var(--color-dark-green);
+    font-size: 1.05em;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-card);
+}
+.exercises-header-tabs button.active {
+    background-color: var(--color-soft-green);
+    color: white;
+    border-color: var(--color-soft-green);
+}
+
+.breathing-card {
+    text-align: center;
+    padding: 40px;
+    margin-bottom: 40px;
+}
+.breathing-card p {
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+@keyframes breathing {
+    0% { transform: scale(1); opacity: 0.8; }
+    40% { transform: scale(1.25); opacity: 1; } 
+    50% { transform: scale(1.25); opacity: 1; }
+    90% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+.outer-circle {
+    width: 280px; 
+    height: 280px;
+    border-radius: 50%;
+    border: 6px solid var(--color-soft-green); 
+    margin: 40px auto;
+    background-color: rgba(255, 255, 255, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(168, 192, 169, 0.6); 
+}
+.outer-circle.animate {
+    animation: breathing 10s infinite ease-in-out;
+}
+.inner-circle {
+    width: 70%; 
+    height: 70%;
+    background-color: var(--color-soft-lavender); 
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em; 
+    font-weight: 600;
+    color: white; 
+}
+#breathing-timer {
+    font-size: 3.5em; 
+    font-weight: 700;
+    margin-top: -10px;
+}
+.breathing-card .controls {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+.exercise-library-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+.exercise-card {
+    text-align: center;
+    padding: 40px;
+}
+.exercise-card h4 {
+    font-size: 1.5em;
+    color: var(--color-soft-lavender);
+}
+
+
+/* 6. Community Page */
+.community-info-card {
+    text-align: center;
+    padding: 40px;
+    background-color: var(--color-soft-lavender);
+    color: white;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-deep);
+}
+.community-info-card h3 {
+    color: white;
+    margin-bottom: 20px;
+}
+.community-info-card p {
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+.community-stats {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+.community-stats strong {
+    display: block;
+    font-size: 1.8em;
+    color: var(--color-soft-green);
+    margin-bottom: 5px;
+}
+
+.share-story-card {
+    margin-bottom: 40px;
+}
+.share-story-card textarea {
+    min-height: 150px;
+    margin-bottom: 15px;
+    background-color: white;
+}
+
+.anonymous-posts h3 {
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--color-soft-lavender);
+    padding-bottom: 10px;
+}
+.post-card {
+    background-color: white;
+    border-left: 6px solid var(--color-soft-green);
+    margin-bottom: 20px;
+    padding: 25px;
+}
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    color: var(--color-soft-lavender);
+    margin-bottom: 10px;
+}
+.post-card p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+.post-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: var(--color-soft-lavender);
+    margin-right: 20px;
+    transition: color 0.2s;
+}
+.post-actions button:hover {
+    color: var(--color-soft-green);
+}
+
+
+/* 7. Profile Page */
+.profile-info {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+}
+.profile-pic-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+.profile-pic-card .icon {
+    font-size: 8em; 
+    color: var(--color-soft-lavender);
+    margin-bottom: 20px;
+}
+.profile-details-card h3 {
+    border-bottom: 2px solid var(--color-soft-lavender);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.profile-details-card p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+
+/* 8. Analytics Dashboard */
+.analytics-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+}
+.summary-card {
+    text-align: center;
+}
+.summary-card h3 {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.summary-card p:first-of-type {
+    font-size: 1em;
+    color: var(--color-soft-lavender);
+}
+.analytics-chart-wrapper {
+    min-height: 450px;
+}
+.analytics-chart-wrapper h3 {
+    margin-bottom: 20px;
+}
+
+/* --- Responsive Adjustments (Optional but Recommended) --- */
+@media (max-width: 1200px) {
+    .quick-access-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 992px) {
+    .journal-container, .mood-tracker-grid, .profile-info {
+        grid-template-columns: 1fr;
+    }
+    .mood-input-card, .mood-stats-grid, .mood-chart-wrapper, .mood-distribution-chart {
+        grid-column: 1 / 2 !important;
+    }
+    .split-container {
+        flex-direction: column;
+        height: 95vh;
+    }
+    .split-left {
+        flex: none;
+        height: 35%;
+        min-height: 250px;
+        justify-content: flex-end;
+    }
+    .auth-logo, .auth-toggle-btn {
+        position: static;
+        margin-bottom: 20px;
+    }
+    .split-right {
+        padding: 40px 20px;
+    }
+}
